@@ -25,7 +25,7 @@ Stack::Stack(int n, Stack s)
 	this-> elements = list<int>(n, s.elements);
 }
 
-int Stack::top() // what does "::" mean???
+int Stack::top()
 {
 	return ::head(this-> elements);  // call the list 'head' function; not a recursive call
 }
@@ -43,9 +43,11 @@ int Stack::size()
 int &Stack::pop()
 {
 	//precondition(not empty());
-	int my_top=this-> top();
+    int* my_top;
+    my_top = new int;
+	*my_top=this-> top();
 	this-> elements = rest(this->elements);
-	return my_top;
+	return *my_top;
 }
 
 Stack &Stack::push(int item) // what do "&" and "*" mean???
