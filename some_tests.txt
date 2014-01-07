@@ -1,0 +1,24 @@
+***part 2***
+: double dup + ; 5 double .s  											   **working**
+
+1 2 3 4 5 6 * * * * * .s 4 2 - .s * .									   **working (gets 1440)**
+
+1 2 100000 3 10000 drop nip over 10 * tuck 2 * swap dup + + + + + 27 - .   **working**
+
+
+***part 3***
+: abs dup 0 < if -1 * endif ; -5 abs .s 						**working**
+: abs dup 0 < if -1 * else dup drop endif ; 5 abs .s 			**working**
+: power dup 1 = if drop else over swap 1 - power * endif ;      **working**
+
+: foo															**working**
+  dup 10 < if
+    100 +
+  else
+    10 +
+  endif
+;
+
+5 foo 15 foo 10 * + 313 -
+
+**see Dave's tests for more**
