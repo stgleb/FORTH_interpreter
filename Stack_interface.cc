@@ -244,7 +244,7 @@ void add_definitions() {
 
         name_def_pair pair;
         string token;
-        bool do_not_add;
+        bool do_not_add = false;
 
         // current token should be ":", so advance one
         cin >> token;
