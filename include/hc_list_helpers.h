@@ -1,7 +1,7 @@
 #if ! defined LIST_HELPERS_H
 #define LIST_HELPERS_H
 
-// SIMPLE LIST ADT
+// SIMPLE LIST ADT HELPER FUNCTIONS
 // created for CMSC245 Fall 2013 by David Wonnacott, Haverford College, Haverford, PA
 
 #include "hc_list.h"

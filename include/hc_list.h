@@ -1,6 +1,9 @@
 #if ! defined LIST_H
 #define LIST_H
 
+// SIMPLE LIST ADT
+// created for CMSC245 Fall 2013 by David Wonnacott, Haverford College, Haverford, PA
+
 #include <assert.h>
 
 template <class T> struct list_element; // see list.t for definition
