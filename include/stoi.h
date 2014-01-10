@@ -1,6 +1,9 @@
 #include <string>
 using namespace std;
 
+// STRING-TO-INTEGER HELPER FUNCTION
+// created for CMSC245 Fall 2013 by David Wonnacott, Haverford College, Haverford, PA
+
 // handy functions to convert between integers (i) and strings (s), and test if a string is made of numerals
 //  e.g.  atoi("325") == 325 and itoa(325) == "325"
 

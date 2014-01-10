@@ -1,5 +1,5 @@
 // unit tests of Stack functions
-// modeled after Dave's queue tests
+// Allison Lake, for CMSC245 at Haverford College, Fall 2013
 
 #include "Stack.h"
 #include "Stack_test.h"

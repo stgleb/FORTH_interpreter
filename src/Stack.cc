@@ -1,12 +1,8 @@
 /*
 	Stack.cc
+    Allison Lake, for CMSC245 at Haverford College, Fall 2013
 	This file contains all of the function definitions for the Stack class
 	This implementation uses a list as a stack
-	
-	Functions:
-	Title			Description
-	----------------------------
-	Stack			Basic constructor
 */
 
 /*--Includes*/

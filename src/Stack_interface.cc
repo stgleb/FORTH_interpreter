@@ -1,5 +1,6 @@
 /*
 	Stack_interface.cc
+ Allison Lake, for CMSC245 at Haverford College, Fall 2013
 	This file contains all of the function definitions for the Stack_interface.
 	These will be used to generate the text interface for the stack
 
@@ -195,7 +196,7 @@ list<pair <string, stack_func> > func_list= list<pair <string, stack_func> >(mak
 											list<pair <string, stack_func> >()))))))))))))));
 
 
-list<name_def_pair> definitions = list<name_def_pair>(); // is it bad to have this as a global variable?
+list<name_def_pair> definitions = list<name_def_pair>();
 
 bool in_func_list(string s) {
 	list<pair <string, stack_func> > temp_func_list;
@@ -256,7 +257,7 @@ void add_definitions() {
         while(token != ";") {
         	if ((in_func_list(token)) | (in_definitions(token)) | (is_numeric(token)) | (token.compare("if") == 0) |
         		(token.compare("else") == 0) | (token.compare("endif") == 0) | (token == pair.name)) {
-        		pair.def = append_item(pair.def, token); //airport// token gets added even if it's not defined...change? design decision?
+        		pair.def = append_item(pair.def, token); 
         		cin >> token;
         	} else {
         		cout << token << " is undefined; " << pair.name << " not compiled" << endl;

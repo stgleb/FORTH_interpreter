@@ -1,5 +1,6 @@
 /*
 	main.cc
+    Allison Lake, for CMSC245 at Haverford College, Fall 2013
 	This file contains the main function for the Stack class and text interface.
 	To disallow running either the tests or the interface, 
 	change the RUN_STACK_TESTS or RUN_STACK_INTERFACE variable from 1 to 0
