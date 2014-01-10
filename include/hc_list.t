@@ -56,13 +56,13 @@ template <class T> bool empty(const list<T> &l)
 	
 template <class T> T head(const list<T> &l)
 {
-	precondition(! empty(l));
+	assert(! empty(l));
 	return l.first->h;
 }
 
 template <class T> list<T> rest(const list<T> &l)
 {
-	precondition(! empty(l));
+	assert(! empty(l));
 	return l.first->t;
 }
 

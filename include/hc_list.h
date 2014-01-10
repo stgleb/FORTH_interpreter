@@ -1,7 +1,7 @@
 #if ! defined LIST_H
 #define LIST_H
 
-#include "logic.h"
+#include <assert.h>
 
 template <class T> struct list_element; // see list.t for definition
 
