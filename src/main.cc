@@ -10,10 +10,21 @@
 #include "Stack.h"
 #include "Stack_test.h"
 #include "Stack_interface.h"
+#include <fstream>
 
 /*----------Constants---------*/
 #define RUN_STACK_TESTS			1
 #define RUN_STACK_INTERFACE		1
+
+
+void run_file(char* file_name) {
+    int length = 1024 * 1024;
+    char* buffer = new char[length];
+
+    ifstream in(file_name, std::ifstream::in);
+    in.read(buffer, length);
+    in.close();
+}
 
 
 int main ()
@@ -27,6 +38,7 @@ int main ()
 	#endif
 	#if RUN_STACK_INTERFACE
 	cout << "Type some FORTH input:" << endl;
+	run_file("file.ft");
 	Start_stack_interface();
 	#endif
 	cout<<"That's all folks!"<<endl;

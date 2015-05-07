@@ -353,11 +353,20 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 void handle_input(string s, Stack &S)
 {
 	string token;
+	string thread = "thread";
+    cout<<s<<endl;
+
 	if (is_numeric(s)) {
 		S.push(stoi(s));
+	} else if (s == thread) {
+	    cout <<"run in thread"<< endl;
+	    cin >> token;
+	    handle_input(token, S);
+	    // to do Thread t1(handle_input, args);
 	} else if (in_func_list(s)) {
 		handle_builtin(s, S);
 	} else if(in_definitions(s)) {
+	    cout<<"execute function "<<s<<endl;
 		handle_userdefined(s, S);
 	} else {
 		cout << s << " is undefined" << endl;
