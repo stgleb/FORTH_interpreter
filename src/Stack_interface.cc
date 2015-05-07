@@ -15,6 +15,7 @@
 #include "Stack_interface.h"
 #include "hc_list.h"
 #include "hc_list_helpers.h"
+#include <fstream>
 Stack main_stack;
 
 
@@ -373,12 +374,35 @@ void handle_input(string s, Stack &S)
 	}
 }
 
+void cli(char* file_name) {
+	main_stack = Stack();
+	ifstream in(file_name, std::ifstream::in);
+	std::streambuf *cinbuf = std::cin.rdbuf();
+	std::cin.rdbuf(in.rdbuf());
+
+    string token;
+    cout<<file_name<<endl;
+    cin >> token;
+    cout<< token<<endl;
+
+    while (token != "end") {
+        cout<< token<<endl;
+        if (token == ":") {
+			add_definitions();
+		} else {
+			handle_input(token, main_stack);
+		}
+		cin >> token;
+	}
+    in.close();
+    std::cin.rdbuf(cinbuf);
+}
 
 void Start_stack_interface()
 {
 	main_stack = Stack();
 
-	string token;
+    string token;
 	cin >> token;
 
 	while (token != "end") {

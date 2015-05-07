@@ -37,6 +37,7 @@ void handle_userdefined(string s, Stack &S);
 void execute_userdefined(name_def_pair p, Stack &S);
 void handle_input(string s, Stack &S);
 void handle_input_recursive(string s, Stack &S);
+void cli(char* file_name);
 void Start_stack_interface();
 
 
