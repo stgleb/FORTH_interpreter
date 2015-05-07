@@ -1,0 +1,15 @@
+: foo
+  2
+  dup 10 < if
+    100 +
+  else
+    10 +
+  endif
+  .s
+;
+
+thread foo
+thread foo
+thread foo
+
+end

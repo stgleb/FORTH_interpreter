@@ -15,7 +15,11 @@
 #include "Stack_interface.h"
 #include "hc_list.h"
 #include "hc_list_helpers.h"
+#include "stoi.h"
+
 #include <fstream>
+#include <thread>
+
 Stack main_stack;
 
 
@@ -358,12 +362,13 @@ void handle_input(string s, Stack &S)
     cout<<s<<endl;
 
 	if (is_numeric(s)) {
-		S.push(stoi(s));
+		S.push(_stoi(s));
 	} else if (s == thread) {
 	    cout <<"run in thread"<< endl;
 	    cin >> token;
-	    handle_input(token, S);
-	    // to do Thread t1(handle_input, args);
+	    cout<< token<< endl;
+	    std::thread t(handle_userdefined, token, std::ref(S));
+	    t.detach();
 	} else if (in_func_list(s)) {
 		handle_builtin(s, S);
 	} else if(in_definitions(s)) {
