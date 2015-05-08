@@ -92,7 +92,6 @@ void pop_and_print(Stack &S)
 		cout << "can't pop an empty stack!" << endl;
 	} else {
 		cout << S.pop() << endl;
-		gil.unlock();
 	}
 }
 
@@ -125,7 +124,7 @@ void swap_(Stack &S)
 	int to_be_below_top = S.pop();
 	int to_be_top = S.pop();
 	S.push(to_be_below_top).push(to_be_top);
-	gil.lock();
+	gil.unlock();
 }
 
 void nip_(Stack &S)
@@ -405,7 +404,6 @@ void handle_input(string s, Stack &S)
 }
 
 void cli(char* file_name) {
-	main_stack = Stack();
 	ifstream in(file_name, std::ifstream::in);
 	std::streambuf *cinbuf = std::cin.rdbuf();
 	std::cin.rdbuf(in.rdbuf());
@@ -430,7 +428,7 @@ void cli(char* file_name) {
 
 void Start_stack_interface()
 {
-	main_stack = Stack();
+	//main_stack = Stack();
 
     string token;
 	cin >> token;
