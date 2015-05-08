@@ -19,9 +19,10 @@
 
 #include <fstream>
 #include <thread>
+#include <mutex>
 
 Stack main_stack;
-
+mutex gil;
 
 // from Dave's queue-adt.cc; helpful in allowing interpreter to create function definitions
 static list<string>append_item(list<string> l, string item)
@@ -39,6 +40,7 @@ void allie_plus(Stack &S)
 	if (S.size() < 2) {
 		cout << "stack contains < 2 elements";
 	} else {
+	    gil.lock();
 		int a;
 		int b;
 		a = S.pop();
@@ -46,6 +48,7 @@ void allie_plus(Stack &S)
 		int result;
 		result = a + b;
 		S.push(result);
+		gil.unlock();
 	}
 }
 
@@ -54,6 +57,7 @@ void allie_minus(Stack &S)
 	if (S.size() < 2) {
 		cout << "stack contains < 2 elements" << endl;
 	} else {
+	    gil.lock();
 		int a;
 		int b;
 		a = S.pop();
@@ -61,14 +65,16 @@ void allie_minus(Stack &S)
 		int result;
 		result = b-a;
 		S.push(result);
-			}
+		gil.unlock();
 	}
+}
 
 void allie_times(Stack &S)
 {
 	if (S.size() < 2) {
 			cout << "stack contains < 2 elements" << endl;
 	} else {
+	    gil.lock();
 		int a;
 		int b;
 		a = S.pop();
@@ -76,7 +82,8 @@ void allie_times(Stack &S)
 		int result;
 		result = a * b;
 		S.push(result);
-		}
+		gil.unlock();
+	}
 }
 
 void pop_and_print(Stack &S)
@@ -85,6 +92,7 @@ void pop_and_print(Stack &S)
 		cout << "can't pop an empty stack!" << endl;
 	} else {
 		cout << S.pop() << endl;
+		gil.unlock();
 	}
 }
 
@@ -99,44 +107,57 @@ void dot_s(Stack &S)
 
 void drop_(Stack &S)
 {
+    gil.lock();
 	S.pop();
+	gil.unlock();
 }
 
 void dup_(Stack &S)
 {
+    gil.lock();
 	S.push(S.top());
+	gil.unlock();
 }
 
 void swap_(Stack &S)
 {
+    gil.lock();
 	int to_be_below_top = S.pop();
 	int to_be_top = S.pop();
 	S.push(to_be_below_top).push(to_be_top);
+	gil.lock();
 }
 
 void nip_(Stack &S)
 {
+    gil.lock();
 	swap_(S);
 	drop_(S);
+	gil.unlock();
 }
 
 void over_(Stack &S)
 {
+    gil.lock();
 	int top = S.pop();
 	int below_top = S.pop();
 	S.push(below_top);
 	S.push(top);
 	S.push(below_top);
+	gil.unlock();
 }
 
 void tuck_(Stack &S)
 {
+    gil.lock();
 	swap_(S);
 	over_(S);
+	gil.unlock();
 }
 
 void lt_(Stack &S)
 {
+    gil.lock();
 	int top = S.pop(); // second operand
 	int below_top = S.pop(); // first operand
 	if (below_top < top) {
@@ -144,10 +165,12 @@ void lt_(Stack &S)
 	} else {
 		S.push(0);
 	}
+	gil.unlock();
 }
 
 void gt_(Stack &S)
 {
+    gil.lock();
 	int top = S.pop(); // second operand
 	int below_top = S.pop(); // first operand
 	if (below_top > top) {
@@ -155,11 +178,12 @@ void gt_(Stack &S)
 	} else {
 		S.push(0);
 	}
-
+    gil.unlock();
 }
 
 void eq_(Stack &S)
 {
+    gil.lock();
 	int top = S.pop(); // second operand
 	int below_top = S.pop(); // first operand
 	if (below_top == top) {
@@ -167,6 +191,7 @@ void eq_(Stack &S)
 	} else {
 		S.push(0);
 	}
+	gil.unlock();
 }
 // .s helper function
 void reverse_print(Stack S) // must FIX

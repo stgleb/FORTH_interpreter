@@ -1,5 +1,4 @@
 : foo
-  2
   dup 10 < if
     100 +
   else
@@ -8,8 +7,7 @@
   .s
 ;
 
-thread foo
-thread foo
-thread foo
+: double dup + ;
+
 
 end
