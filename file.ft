@@ -12,9 +12,15 @@
 
 : power dup 1 = if drop else over swap 1 - power * endif ;
 
-2 3
-thread power
-thread foo
-thread abs
+: add + 1 ;
+
+: fib over over + ;
+1 2
+fib
+.s
+fib
+.s
+fib
+.s
 
 end

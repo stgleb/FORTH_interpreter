@@ -18,6 +18,7 @@
 #include "stoi.h"
 
 #include <fstream>
+#include <chrono>
 #include <thread>
 #include <mutex>
 
@@ -424,6 +425,7 @@ void cli(char* file_name) {
 	}
     in.close();
     std::cin.rdbuf(cinbuf);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 void Start_stack_interface()
