@@ -7,7 +7,7 @@ string itos(int i)  // turn an int i into a string; possibly useful for printing
   char t[33]; sprintf(t,"%d",i); return t;
 }
 
-int _stoi(string s)
+int stoi(string s)
 {
   return atoi(s.c_str());
 }
