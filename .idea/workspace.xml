@@ -2,17 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ce622d02-c3e9-4c63-8968-e5156039ae2f" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/FORTH_interpreter" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/check_mutex.cpp" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/obj/Stack.d" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/obj/Stack_interface.d" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/obj/Stack_interface.o" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/obj/Stack_test.d" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/obj/main.d" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/obj/stoi.d" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/Stack.o" afterPath="$PROJECT_DIR$/obj/Stack.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/Stack_test.o" afterPath="$PROJECT_DIR$/obj/Stack_test.o" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/main.o" afterPath="$PROJECT_DIR$/obj/main.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/FORTH_interpreter" afterPath="$PROJECT_DIR$/bin/FORTH_interpreter" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/Stack_interface.o" afterPath="$PROJECT_DIR$/obj/Stack_interface.o" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/obj/stoi.o" afterPath="$PROJECT_DIR$/obj/stoi.o" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Stack_interface.cc" afterPath="$PROJECT_DIR$/src/Stack_interface.cc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.sh" afterPath="$PROJECT_DIR$/build.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/file.ft" afterPath="$PROJECT_DIR$/file.ft" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/helpers/stoi.cc" afterPath="$PROJECT_DIR$/helpers/stoi.cc" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/include/stoi.h" afterPath="$PROJECT_DIR$/include/stoi.h" />
     </list>
     <ignored path="FORTH_interpreter.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,11 +38,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Stack_interface.cc" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Stack_interface.cc" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Stack_interface.cc">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.6666665" vertical-offset="414" max-vertical-offset="8100">
-              <caret line="33" column="3" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
+            <state vertical-scroll-proportion="0.39926064" vertical-offset="900" max-vertical-offset="10872">
+              <caret line="62" column="27" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -48,8 +51,8 @@
       <file leaf-file-name="file.ft" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/file.ft">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.32" vertical-offset="0" max-vertical-offset="450">
-              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+            <state vertical-scroll-proportion="-4.32" vertical-offset="90" max-vertical-offset="540">
+              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -108,11 +111,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.sh" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="build.sh" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2320442" vertical-offset="0" max-vertical-offset="543">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+            <state vertical-scroll-proportion="-7.2" vertical-offset="0" max-vertical-offset="288">
+              <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -121,8 +124,8 @@
       <file leaf-file-name="stoi.h" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/stoi.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="324">
-              <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="324">
+              <caret line="10" column="40" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -145,13 +148,13 @@
         <option value="$PROJECT_DIR$/bin/file.ft" />
         <option value="$PROJECT_DIR$/include/Stack_interface.h" />
         <option value="$PROJECT_DIR$/helpers/stoi.cc" />
-        <option value="$PROJECT_DIR$/build.sh" />
         <option value="$PROJECT_DIR$/include/stoi.h" />
         <option value="$PROJECT_DIR$/include/hc_list.t" />
         <option value="$PROJECT_DIR$/check_mutex.cpp" />
         <option value="$PROJECT_DIR$/src/main.cc" />
         <option value="$PROJECT_DIR$/file.ft" />
         <option value="$PROJECT_DIR$/src/Stack_interface.cc" />
+        <option value="$PROJECT_DIR$/build.sh" />
       </list>
     </option>
   </component>
@@ -583,8 +586,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/include/stoi.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="324">
-          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="324">
+          <caret line="10" column="40" selection-start-line="10" selection-start-column="40" selection-end-line="10" selection-end-column="40" />
           <folding />
         </state>
       </provider>
@@ -615,24 +618,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/file.ft">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.32" vertical-offset="0" max-vertical-offset="450">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Stack_interface.cc">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.6666665" vertical-offset="414" max-vertical-offset="8100">
-          <caret line="33" column="3" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
+        <state vertical-scroll-proportion="-4.32" vertical-offset="90" max-vertical-offset="540">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2320442" vertical-offset="0" max-vertical-offset="543">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state vertical-scroll-proportion="-7.2" vertical-offset="0" max-vertical-offset="288">
+          <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Stack_interface.cc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39926064" vertical-offset="900" max-vertical-offset="10872">
+          <caret line="62" column="27" selection-start-line="62" selection-start-column="27" selection-end-line="62" selection-end-column="27" />
           <folding />
         </state>
       </provider>

@@ -16,13 +16,22 @@
 #include "hc_list.h"
 #include "hc_list_helpers.h"
 #include "stoi.h"
+#include "tsx-tools/include/rtm.h"
 
 #include <fstream>
 #include <thread>
 #include <mutex>
 
+#define _XABORT_CODE(x)		(((x) >> 24) & 0xff)
+#define _ABORT_LOCK_BUSY	0xff
+
 Stack main_stack;
 mutex gil;
+
+int total_count = 0;
+int abort_count = 0;
+int success = 0;
+int count_with_lock = 0;
 
 // from Dave's queue-adt.cc; helpful in allowing interpreter to create function definitions
 static list<string>append_item(list<string> l, string item)
@@ -40,15 +49,33 @@ void allie_plus(Stack &S)
 	if (S.size() < 2) {
 		cout << "stack contains < 2 elements";
 	} else {
-	    gil.lock();
-		int a;
-		int b;
-		a = S.pop();
-		b = S.pop();
-		int result;
-		result = a + b;
-		S.push(result);
-		gil.unlock();
+	    total_count++;
+	    if(_xbegin() == _XBEGIN_STARTED) {
+	        if(!gil.try_lock()) {
+	            abort_count++;
+	            _xabort(0xff);
+	        }
+            int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = a + b;
+            S.push(result);
+            success++;
+            _xend();
+		} else {
+		    gil.lock();
+		    int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = a + b;
+            S.push(result);
+            count_with_lock++;
+		    gil.unlock();
+		}
 	}
 }
 
@@ -57,32 +84,64 @@ void allie_minus(Stack &S)
 	if (S.size() < 2) {
 		cout << "stack contains < 2 elements" << endl;
 	} else {
-	    gil.lock();
-		int a;
-		int b;
-		a = S.pop();
-		b = S.pop();
-		int result;
-		result = b-a;
-		S.push(result);
-		gil.unlock();
+	    total_count++;
+	    if(_xbegin() == _XBEGIN_STARTED) {
+            if(!gil.try_lock()) {
+                abort_count++;
+	            _xabort(0xff);
+	        }
+            int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = b-a;
+            S.push(result);
+            success++;
+            _xend();
+        } else {
+            gil.lock();
+            int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = b-a;
+            S.push(result);
+            count_with_lock++;
+            gil.unlock();
+        }
 	}
 }
+
 
 void allie_times(Stack &S)
 {
 	if (S.size() < 2) {
 			cout << "stack contains < 2 elements" << endl;
 	} else {
-	    gil.lock();
-		int a;
-		int b;
-		a = S.pop();
-		b = S.pop();
-		int result;
-		result = a * b;
-		S.push(result);
-		gil.unlock();
+	    if(_xbegin() == _XBEGIN_STARTED) {
+            if(!gil.try_lock())
+	            _xabort(0xff);
+            int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = a * b;
+            S.push(result);
+            _xend();
+        } else {
+            gil.lock();
+            int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = a * b;
+            S.push(result);
+            gil.unlock();
+        }
 	}
 }
 
@@ -106,91 +165,181 @@ void dot_s(Stack &S)
 
 void drop_(Stack &S)
 {
-    gil.lock();
-	S.pop();
-	gil.unlock();
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+	    S.pop();
+	    _xend();
+	} else {
+	    gil.lock();
+	    S.pop();
+	    gil.unlock();
+	}
 }
 
 void dup_(Stack &S)
 {
-    gil.lock();
-	S.push(S.top());
-	gil.unlock();
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+	    S.push(S.top());
+	    _xend();
+	} else {
+	    gil.lock();
+	    S.push(S.top());
+	    gil.unlock();
+	}
 }
 
 void swap_(Stack &S)
 {
-    gil.lock();
-	int to_be_below_top = S.pop();
-	int to_be_top = S.pop();
-	S.push(to_be_below_top).push(to_be_top);
-	gil.unlock();
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+	    int to_be_below_top = S.pop();
+	    int to_be_top = S.pop();
+	    S.push(to_be_below_top).push(to_be_top);
+	    _xend();
+	} else {
+	    gil.lock();
+	    int to_be_below_top = S.pop();
+	    int to_be_top = S.pop();
+	    S.push(to_be_below_top).push(to_be_top);
+	    gil.unlock();
+	}
 }
 
 void nip_(Stack &S)
 {
-    gil.lock();
-	swap_(S);
-	drop_(S);
-	gil.unlock();
+   if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock()) {
+	       _xabort(0xff);
+	    }
+	    swap_(S);
+	    drop_(S);
+	    _xend();
+	} else {
+	    gil.lock();
+	    swap_(S);
+	    drop_(S);
+	    gil.unlock();
+	}
 }
 
 void over_(Stack &S)
 {
-    gil.lock();
-	int top = S.pop();
-	int below_top = S.pop();
-	S.push(below_top);
-	S.push(top);
-	S.push(below_top);
-	gil.unlock();
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+	    int top = S.pop();
+        int below_top = S.pop();
+        S.push(below_top);
+        S.push(top);
+        S.push(below_top);
+	    _xend();
+	} else {
+	    gil.lock();
+        int top = S.pop();
+        int below_top = S.pop();
+        S.push(below_top);
+        S.push(top);
+        S.push(below_top);
+	    gil.unlock();
+	}
 }
 
 void tuck_(Stack &S)
 {
-    gil.lock();
-	swap_(S);
-	over_(S);
-	gil.unlock();
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+        swap_(S);
+	    over_(S);
+	    _xend();
+	} else {
+	    gil.lock();
+        swap_(S);
+	    over_(S);
+	    gil.unlock();
+	}
 }
 
 void lt_(Stack &S)
 {
-    gil.lock();
-	int top = S.pop(); // second operand
-	int below_top = S.pop(); // first operand
-	if (below_top < top) {
-		S.push(-1);
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+        int top = S.pop(); // second operand
+        int below_top = S.pop(); // first operand
+        if (below_top < top) {
+            S.push(-1);
+        } else {
+            S.push(0);
+        }
+	    _xend();
 	} else {
-		S.push(0);
+	    gil.lock();
+        int top = S.pop(); // second operand
+        int below_top = S.pop(); // first operand
+        if (below_top < top) {
+            S.push(-1);
+        } else {
+            S.push(0);
+        }
+	    gil.unlock();
 	}
-	gil.unlock();
 }
 
 void gt_(Stack &S)
 {
-    gil.lock();
-	int top = S.pop(); // second operand
-	int below_top = S.pop(); // first operand
-	if (below_top > top) {
-		S.push(-1);
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+        int top = S.pop(); // second operand
+        int below_top = S.pop(); // first operand
+        if (below_top > top) {
+            S.push(-1);
+        } else {
+            S.push(0);
+        }
+	    _xend();
 	} else {
-		S.push(0);
+	    gil.lock();
+        int top = S.pop(); // second operand
+        int below_top = S.pop(); // first operand
+        if (below_top > top) {
+            S.push(-1);
+        } else {
+            S.push(0);
+        }
+	    gil.unlock();
 	}
-    gil.unlock();
 }
 
 void eq_(Stack &S)
 {
-    gil.lock();
-	int top = S.pop(); // second operand
-	int below_top = S.pop(); // first operand
-	if (below_top == top) {
-		S.push(-1);
+    if(_xbegin() == _XBEGIN_STARTED) {
+        if(!gil.try_lock())
+	       _xabort(0xff);
+        int top = S.pop(); // second operand
+        int below_top = S.pop(); // first operand
+        if (below_top == top) {
+            S.push(-1);
+        } else {
+            S.push(0);
+        }
+	    _xend();
 	} else {
-		S.push(0);
+	    gil.lock();
+        int top = S.pop(); // second operand
+        int below_top = S.pop(); // first operand
+        if (below_top == top) {
+            S.push(-1);
+        } else {
+            S.push(0);
+        }
+	    gil.unlock();
 	}
-	gil.unlock();
 }
 // .s helper function
 void reverse_print(Stack S) // must FIX
@@ -424,6 +573,11 @@ void cli(char* file_name) {
 	}
     in.close();
     std::cin.rdbuf(cinbuf);
+
+    cout<<"Total count of transacionts: "<<total_count<<endl;
+	cout<<"Successful transactions: "<<success<<endl;
+	cout<<"Aborted transactions: "<<abort_count<<endl;
+	cout<<"Success with lock: "<<count_with_lock<<endl;
 }
 
 void Start_stack_interface()
