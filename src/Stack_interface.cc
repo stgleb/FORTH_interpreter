@@ -16,10 +16,18 @@
 #include "hc_list.h"
 #include "hc_list_helpers.h"
 #include "stoi.h"
+#include "tsx-tools/include/rtm.h"
+
+int total_count = 0;
+int abort_count = 0;
+int success_count = 0;
+
+bool debug = false;
 
 #include <fstream>
 #include <thread>
 #include <mutex>
+#include <chrono>
 
 Stack main_stack;
 mutex gil;
@@ -34,6 +42,19 @@ static list<string>append_item(list<string> l, string item)
   }
 }
 
+bool check_mutex(mutex& m) {
+    char* ptr = (char*)(&m);
+    cout<<hex<<endl;
+
+    for(int i = 8;i < 13; i++) {
+        if(ptr[i] != 0){
+            return false;
+        }
+    }
+
+    return true;
+}
+
 // functions to go in list
 void allie_plus(Stack &S)
 {
@@ -41,14 +62,34 @@ void allie_plus(Stack &S)
 		cout << "stack contains < 2 elements";
 	} else {
 	    gil.lock();
-		int a;
-		int b;
-		a = S.pop();
-		b = S.pop();
-		int result;
-		result = a + b;
-		S.push(result);
-		gil.unlock();
+	    total_count++;
+	    gil.unlock();
+	    if(_xbegin() == _XBEGIN_STARTED) {
+	        if(!gil.try_lock()) {
+	            _xabort(0xFF);
+	        }
+	        gil.unlock();
+	        int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = a + b;
+            S.push(result);
+	        _xend();
+	        success_count++;
+	    } else {
+            gil.lock();
+            int a;
+            int b;
+            a = S.pop();
+            b = S.pop();
+            int result;
+            result = a + b;
+            S.push(result);
+            abort_count++;
+            gil.unlock();
+		}
 	}
 }
 
@@ -154,6 +195,12 @@ void tuck_(Stack &S)
 	gil.unlock();
 }
 
+void sleep(Stack &S)
+{
+    int value = S.pop();
+    std::this_thread::sleep_for(std::chrono::milliseconds(value));
+}
+
 void lt_(Stack &S)
 {
     gil.lock();
@@ -222,7 +269,8 @@ list<pair <string, stack_func> > func_list= list<pair <string, stack_func> >(mak
 											list<pair <string, stack_func> >(make_pair("<", lt_),
 											list<pair <string, stack_func> >(make_pair(">", gt_),
 											list<pair <string, stack_func> >(make_pair("=", eq_),
-											list<pair <string, stack_func> >()))))))))))))));
+											list<pair <string, stack_func> >(make_pair("sleep", sleep),
+											list<pair <string, stack_func> >())))))))))))))));
 
 
 list<name_def_pair> definitions = list<name_def_pair>();
@@ -388,15 +436,20 @@ void handle_input(string s, Stack &S)
 	if (is_numeric(s)) {
 		S.push(_stoi(s));
 	} else if (s == thread) {
-	    cout <<"run in thread"<< endl;
-	    cin >> token;
-	    cout<< token<< endl;
+	    if(debug)
+            cout <<"run in thread"<< endl;
+        cin >> token;
+
+        if (debug)
+            cout<< token<< endl;
+
 	    std::thread t(handle_userdefined, token, std::ref(S));
 	    t.detach();
 	} else if (in_func_list(s)) {
 		handle_builtin(s, S);
 	} else if(in_definitions(s)) {
-	    cout<<"execute function "<<s<<endl;
+	    if (debug)
+	        cout<<"execute function "<<s<<endl;
 		handle_userdefined(s, S);
 	} else {
 		cout << s << " is undefined" << endl;
@@ -424,7 +477,12 @@ void cli(char* file_name) {
 	}
     in.close();
     std::cin.rdbuf(cinbuf);
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    cout<<"Total count of transacionts: "<<total_count<<endl;
+	cout<<"Successful transactions: "<<success_count<<endl;
+	cout<<"Aborted transactions: "<<abort_count<<endl;
 }
+
 
 void Start_stack_interface()
 {

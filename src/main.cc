@@ -11,6 +11,8 @@
 #include "Stack_test.h"
 #include "Stack_interface.h"
 #include <fstream>
+#include <chrono>
+#include <thread>
 
 /*----------Constants---------*/
 #define RUN_STACK_TESTS			1

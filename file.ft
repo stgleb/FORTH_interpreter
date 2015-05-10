@@ -12,9 +12,69 @@
 
 : power dup 1 = if drop else over swap 1 - power * endif ;
 
-2 3
-thread power
-thread foo
-thread abs
+: add + 1 ;
+-x
+2 2 3  1 1 2  2 1 2 1
+
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
+thread add
 
 end
