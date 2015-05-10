@@ -28,9 +28,13 @@ bool debug = false;
 #include <thread>
 #include <mutex>
 #include <chrono>
+#include <map>
+#include <vector>
 
 Stack main_stack;
 mutex gil;
+map<string, int> memory;
+
 
 // from Dave's queue-adt.cc; helpful in allowing interpreter to create function definitions
 static list<string>append_item(list<string> l, string item)
@@ -255,6 +259,25 @@ void reverse_print(Stack S) // must FIX
 	}
 }
 
+void dir(Stack& s) {
+    for (map<string, int>::iterator it=memory.begin(); it!=memory.end(); ++it)
+        cout << it->first << " => " << it->second << '\n';
+}
+
+void define_variable(string s, Stack& S){
+    if (S.empty()) {
+		memory[s] = 0;
+	} else {
+	    int val = S.pop();
+	    memory[s] = val;
+	}
+}
+
+void fetch(string s, Stack& S){
+    S.push(memory[s]);
+}
+
+
 list<pair <string, stack_func> > func_list= list<pair <string, stack_func> >(make_pair("+", allie_plus),
 											list<pair <string, stack_func> >(make_pair("-", allie_minus),
 											list<pair <string, stack_func> >(make_pair("*", allie_times),
@@ -270,7 +293,8 @@ list<pair <string, stack_func> > func_list= list<pair <string, stack_func> >(mak
 											list<pair <string, stack_func> >(make_pair(">", gt_),
 											list<pair <string, stack_func> >(make_pair("=", eq_),
 											list<pair <string, stack_func> >(make_pair("sleep", sleep),
-											list<pair <string, stack_func> >())))))))))))))));
+											list<pair <string, stack_func> >(make_pair("dir", dir),
+											list<pair <string, stack_func> >()))))))))))))))));
 
 
 list<name_def_pair> definitions = list<name_def_pair>();
@@ -332,15 +356,8 @@ void add_definitions() {
         cin >> token;
         // current token should now be first word in the function definition
         while(token != ";") {
-        	if ((in_func_list(token)) | (in_definitions(token)) | (is_numeric(token)) | (token.compare("if") == 0) |
-        		(token.compare("else") == 0) | (token.compare("endif") == 0) | (token == pair.name)) {
-        		pair.def = append_item(pair.def, token); 
+        		pair.def = append_item(pair.def, token);
         		cin >> token;
-        	} else {
-        		cout << token << " is undefined; " << pair.name << " not compiled" << endl;
-        		do_not_add = true;
-        		break;
-        	}
         }
         if (not do_not_add) {
         	 definitions = list<name_def_pair>(pair, definitions);
@@ -418,9 +435,49 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 				} // otherwise, word is "endif", so we're done
 			}
 			break;
-		} else {
-			handle_input(word, S);
-			temp_word_list = rest(temp_word_list);
+		}   if (word == "loop"){
+                temp_word_list = rest(temp_word_list); // cut out the "if" from the word list
+                word = head(temp_word_list); //extract cycle count.
+                int count = 0;
+                std::vector<string> commands;
+
+                if(memory.find(word) != memory.end()){
+                    count = memory[word];
+                } else {
+                    count = _stoi(word);
+                }
+
+                //create new variable index, that will be modified during cycle.
+                memory["index"] = count;
+
+
+                while(word != "endloop") {
+                    temp_word_list = rest(temp_word_list); // cut out the "if" from the word list
+                    word = head(temp_word_list);
+
+                    if (word == "endloop") {
+                        temp_word_list = rest(temp_word_list);
+                        word = head(temp_word_list);
+                        break;
+                    }
+                    commands.push_back(word);
+                }
+
+                int i = 0;
+                for(std::vector<string>::iterator it=commands.begin(); it != commands.end(); ++it) {
+                    cout<< i << " : "<< *it<<endl;
+                    i++;
+                }
+
+                for(int i = 0;i < count;i++) {
+                      for (std::vector<string>::iterator it=commands.begin(); it != commands.end(); ++it) {
+                            handle_input(*it, S);
+                      }
+                    memory["index"]--;
+                }
+		    } else {
+			    handle_input(word, S);
+			    temp_word_list = rest(temp_word_list);
 		}
 	}
 
@@ -452,7 +509,12 @@ void handle_input(string s, Stack &S)
 	        cout<<"execute function "<<s<<endl;
 		handle_userdefined(s, S);
 	} else {
-		cout << s << " is undefined" << endl;
+        if(s[0] == '@'){
+            fetch(s.substr(1), S);
+        } else {
+            define_variable(s, S);
+            cout <<"variable "<< s << " is defined" << endl;
+        }
 	}
 }
 

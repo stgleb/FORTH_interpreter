@@ -13,68 +13,9 @@
 : power dup 1 = if drop else over swap 1 - power * endif ;
 
 : add + 1 ;
--x
-2 2 3  1 1 2  2 1 2 1
 
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
-thread add
+: test_loop loop 3 1 2  - endloop .s - ;
 
+a
+test_loop
 end
