@@ -407,7 +407,11 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 	bool boolean;
 	temp_word_list = p.def;
 	for (int n = length(p.def); n>0; n--) {
-		word = head(temp_word_list);
+	    if(!empty(temp_word_list))
+		    word = head(temp_word_list);
+		else
+		    break;
+		    
 		if (word == "if") {
 			boolean = ((S.pop() == 0)? false : true ); // pop the stack -- top element should indicate "true" or "false"
 			temp_word_list = rest(temp_word_list); // cut out the "if" from the word list
@@ -435,7 +439,7 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 				} // otherwise, word is "endif", so we're done
 			}
 			break;
-		}   if (word == "loop"){
+		}  else if (word == "loop"){
                 temp_word_list = rest(temp_word_list); // cut out the "if" from the word list
                 word = head(temp_word_list); //extract cycle count.
                 int count = 0;
@@ -450,24 +454,16 @@ void execute_userdefined(name_def_pair p, Stack &S) {
                 //create new variable index, that will be modified during cycle.
                 memory["index"] = count;
 
-
                 while(word != "endloop") {
                     temp_word_list = rest(temp_word_list); // cut out the "if" from the word list
                     word = head(temp_word_list);
-
                     if (word == "endloop") {
-                        temp_word_list = rest(temp_word_list);
-                        word = head(temp_word_list);
                         break;
                     }
+
                     commands.push_back(word);
                 }
-
-                int i = 0;
-                for(std::vector<string>::iterator it=commands.begin(); it != commands.end(); ++it) {
-                    cout<< i << " : "<< *it<<endl;
-                    i++;
-                }
+                temp_word_list = rest(temp_word_list);
 
                 for(int i = 0;i < count;i++) {
                       for (std::vector<string>::iterator it=commands.begin(); it != commands.end(); ++it) {
@@ -475,12 +471,12 @@ void execute_userdefined(name_def_pair p, Stack &S) {
                       }
                     memory["index"]--;
                 }
+                cout<<"end cycle"<<endl;
 		    } else {
 			    handle_input(word, S);
 			    temp_word_list = rest(temp_word_list);
 		}
 	}
-
 }
 
 
