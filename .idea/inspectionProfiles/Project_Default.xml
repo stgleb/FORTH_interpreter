@@ -1,0 +1,39 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0" is_locked="false">
+    <option name="myName" value="Project Default" />
+    <option name="myLocal" value="false" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="25">
+            <item index="0" class="java.lang.String" itemvalue="simplejson" />
+            <item index="1" class="java.lang.String" itemvalue="python-glanceclient-master" />
+            <item index="2" class="java.lang.String" itemvalue="python-neutronclient-master" />
+            <item index="3" class="java.lang.String" itemvalue="netaddr" />
+            <item index="4" class="java.lang.String" itemvalue="python-heatclient-master" />
+            <item index="5" class="java.lang.String" itemvalue="python-swiftclient-master" />
+            <item index="6" class="java.lang.String" itemvalue="pep8" />
+            <item index="7" class="java.lang.String" itemvalue="SQLAlchemy" />
+            <item index="8" class="java.lang.String" itemvalue="keystone-stable/havana" />
+            <item index="9" class="java.lang.String" itemvalue="python-novaclient-origin/HEAD" />
+            <item index="10" class="java.lang.String" itemvalue="glance-stable/havana" />
+            <item index="11" class="java.lang.String" itemvalue="python-cinderclient-master" />
+            <item index="12" class="java.lang.String" itemvalue="Sphinx" />
+            <item index="13" class="java.lang.String" itemvalue="tempest-origin/stable/havana" />
+            <item index="14" class="java.lang.String" itemvalue="amqp" />
+            <item index="15" class="java.lang.String" itemvalue="kombu" />
+            <item index="16" class="java.lang.String" itemvalue="horizon-stable/havana" />
+            <item index="17" class="java.lang.String" itemvalue="python-openstackclient-master" />
+            <item index="18" class="java.lang.String" itemvalue="python-keystoneclient-master" />
+            <item index="19" class="java.lang.String" itemvalue="cinder-stable/havana" />
+            <item index="20" class="java.lang.String" itemvalue="tox" />
+            <item index="21" class="java.lang.String" itemvalue="iso8601" />
+            <item index="22" class="java.lang.String" itemvalue="nova-stable/havana" />
+            <item index="23" class="java.lang.String" itemvalue="oslo.config" />
+            <item index="24" class="java.lang.String" itemvalue="nose" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
