@@ -18,6 +18,7 @@
 #include "stoi.h"
 #include "tsx-tools/include/rtm.h"
 
+
 int total_count = 0;
 int abort_count = 0;
 int success_count = 0;
@@ -30,6 +31,8 @@ bool debug = false;
 #include <chrono>
 #include <map>
 #include <vector>
+#include <chrono>
+
 
 Stack main_stack;
 mutex gil;
@@ -62,8 +65,11 @@ bool check_mutex(mutex& m) {
 // functions to go in list
 void allie_plus(Stack &S)
 {
+    cout<<S.size()<<endl;
+
 	if (S.size() < 2) {
 		cout << "stack contains < 2 elements";
+		exit(1);
 	} else {
 	    gil.lock();
 	    total_count++;
@@ -277,6 +283,9 @@ void fetch(string s, Stack& S){
     S.push(memory[s]);
 }
 
+void wait() {
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+}
 
 list<pair <string, stack_func> > func_list= list<pair <string, stack_func> >(make_pair("+", allie_plus),
 											list<pair <string, stack_func> >(make_pair("-", allie_minus),
@@ -403,6 +412,7 @@ void handle_userdefined(string s, Stack &S) {
 
 void execute_userdefined(name_def_pair p, Stack &S) {
 	string word;
+	string thread = "thread";
 	list<string> temp_word_list;
 	bool boolean;
 	temp_word_list = p.def;
@@ -439,7 +449,17 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 				} // otherwise, word is "endif", so we're done
 			}
 			break;
-		}  else if (word == "loop"){
+		} else if (word == thread) {
+	    if(debug)
+            cout <<"run in thread"<< endl;
+            word = head(temp_word_list);
+
+            if (debug)
+                cout<<word<< endl;
+
+            std::thread t(handle_userdefined, word, std::ref(S));
+            t.detach();
+	    } else if (word == "loop"){
                 temp_word_list = rest(temp_word_list); // cut out the "if" from the word list
                 word = head(temp_word_list); //extract cycle count.
                 int count = 0;
@@ -500,6 +520,8 @@ void handle_input(string s, Stack &S)
 	    t.detach();
 	} else if (in_func_list(s)) {
 		handle_builtin(s, S);
+	} else if(s == "wait") {
+	    wait();
 	} else if(in_definitions(s)) {
 	    if (debug)
 	        cout<<"execute function "<<s<<endl;
