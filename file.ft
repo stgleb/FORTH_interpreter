@@ -25,6 +25,9 @@
 prepare
 thread sum
 thread sum
+thread sum
+thread sum
+thread sum
 
 wait
 .s

@@ -65,76 +65,56 @@ bool check_mutex(mutex& m) {
 // functions to go in list
 void allie_plus(Stack &S)
 {
-    cout<<S.size()<<endl;
-
+	gil.lock();
+        cout<<S.size()<<endl;
 	if (S.size() < 2) {
 		cout << "stack contains < 2 elements";
 		exit(1);
-	} else {
-	    gil.lock();
-	    total_count++;
-	    gil.unlock();
-	    if(_xbegin() == _XBEGIN_STARTED) {
-	        if(!gil.try_lock()) {
-	            _xabort(0xFF);
-	        }
-	        gil.unlock();
-	        int a;
+	} else {	    
+	    total_count++; 
+	    int a;
             int b;
             a = S.pop();
             b = S.pop();
             int result;
             result = a + b;
-            S.push(result);
-	        _xend();
-	        success_count++;
-	    } else {
-            gil.lock();
-            int a;
-            int b;
-            a = S.pop();
-            b = S.pop();
-            int result;
-            result = a + b;
-            S.push(result);
-            abort_count++;
-            gil.unlock();
-		}
+            S.push(result); 
 	}
+	gil.unlock();
 }
 
 void allie_minus(Stack &S)
 {
+	gil.lock();
 	if (S.size() < 2) {
 		cout << "stack contains < 2 elements" << endl;
-	} else {
-	    gil.lock();
+	} else { 
 		int a;
 		int b;
 		a = S.pop();
 		b = S.pop();
 		int result;
 		result = b-a;
-		S.push(result);
-		gil.unlock();
+		S.push(result);		
 	}
+	gil.unlock();
 }
 
 void allie_times(Stack &S)
 {
+	gil.lock();
 	if (S.size() < 2) {
 			cout << "stack contains < 2 elements" << endl;
-	} else {
-	    gil.lock();
+	} else { 
 		int a;
 		int b;
 		a = S.pop();
 		b = S.pop();
 		int result;
 		result = a * b;
-		S.push(result);
-		gil.unlock();
+		S.push(result);		
 	}
+	gil.lock();
 }
 
 void pop_and_print(Stack &S)
