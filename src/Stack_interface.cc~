@@ -417,9 +417,7 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 	list<string> temp_word_list;
 	bool boolean;
 	temp_word_list = p.def;
-	vector<std::thread> threads;
-	
-for (int n = length(p.def); n>0; n--) {
+	for (int n = length(p.def); n>0; n--) {
 	    if(!empty(temp_word_list))
 		    word = head(temp_word_list);
 		else
@@ -431,7 +429,7 @@ for (int n = length(p.def); n>0; n--) {
 			word = head(temp_word_list); // advance to the next word
 			if (boolean) {
 				while ((word!="else") && (word!="endif")) {
-					handle_input(word, S, threads);
+					handle_input(word, S);
 					temp_word_list = rest(temp_word_list);
 					word = head(temp_word_list);
 				}  // word should now be "else" or "endif", so we're done
@@ -445,7 +443,7 @@ for (int n = length(p.def); n>0; n--) {
 					temp_word_list = rest(temp_word_list);
 					word = head(temp_word_list); // word should now be first word after the "else"
 					while(word!="endif") {
-						handle_input(word, S, threads);
+						handle_input(word, S);
 						temp_word_list = rest(temp_word_list);
 						word = head(temp_word_list); // now word should be "endif", so we're done
 					}
@@ -490,20 +488,20 @@ for (int n = length(p.def); n>0; n--) {
 
                 for(int i = 0;i < count;i++) {
                       for (std::vector<string>::iterator it=commands.begin(); it != commands.end(); ++it) {
-                            handle_input(*it, S, threads);
+                            handle_input(*it, S);
                       }
                     memory["index"]--;
                 }
                 cout<<"end cycle"<<endl;
 		    } else {
-			    handle_input(word, S, threads);
+			    handle_input(word, S);
 			    temp_word_list = rest(temp_word_list);
 		}
 	}
 }
 
 
-void handle_input(string s, Stack &S, vector<std::thread> threads)
+void handle_input(string s, Stack &S, int a)
 {
 	string token;
 	string thread = "thread";
@@ -556,7 +554,7 @@ void cli(char* file_name) {
         if (token == ":") {
 			add_definitions();
 		} else {
-			handle_input(token, main_stack, threads);
+			handle_input(token, main_stack, a);
 		}
 		cin >> token;
 	}
@@ -584,7 +582,7 @@ void Start_stack_interface()
 		if (token == ":") {
 			add_definitions();
 		} else {
-			handle_input(token, main_stack, threads);
+			handle_input(token, main_stack, 0);
 		}
 		cin >> token;
 	}

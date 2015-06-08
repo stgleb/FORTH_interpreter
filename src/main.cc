@@ -13,6 +13,7 @@
 #include <fstream>
 #include <chrono>
 #include <thread>
+#include <ctime>
 
 /*----------Constants---------*/
 #define RUN_STACK_TESTS			1
@@ -42,6 +43,7 @@ int main ()
 	#endif
 	#if RUN_STACK_INTERFACE
 	cout << "Type some FORTH input:" << endl;
+	cli("prepare.ft");
 	cli("file.ft");
 	Start_stack_interface();
 	#endif

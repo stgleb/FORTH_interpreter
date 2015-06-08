@@ -16,13 +16,18 @@
 
 : test_loop loop 2 1 1  - .s endloop ;
 
-: prepare loop 1000 1 endloop ;
-
 : sum  + + + + + + + + + + + + + + + + + + + + ;
 
 : run_threads  loop 20 1 thread sum endloop ;
 
-prepare
+thread sum
+thread sum
+thread sum
+thread sum
+thread sum
+thread sum
+thread sum
+thread sum
 thread sum
 thread sum
 
