@@ -1,0 +1,7 @@
+: prepare loop 1000 1 endloop ;
+
+prepare
+
+.s
+
+end
