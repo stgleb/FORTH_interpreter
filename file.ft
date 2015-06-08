@@ -1,0 +1,32 @@
+: foo
+  dup 10 < if
+    100 +
+  else
+    10 +
+  endif
+;
+
+: double dup + ;
+
+: abs dup 0 < if -1 * endif ;
+
+: power dup 1 = if drop else over swap 1 - power * endif ;
+
+: add + 1 ;
+
+: test_loop loop 2 1 1  - .s endloop ;
+
+: prepare loop 1000 1 endloop ;
+
+: sum  + + + + + + + + + + + + + + + + + + + + ;
+
+: run_threads  loop 20 1 thread sum endloop ;
+
+prepare
+thread sum
+thread sum
+
+wait
+.s
+
+end
