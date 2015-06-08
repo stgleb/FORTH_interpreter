@@ -38,7 +38,7 @@ bool debug = false;
 Stack main_stack;
 mutex gil;
 map<string, int> memory;
-
+vector<std::thread> threads;
 
 // from Dave's queue-adt.cc; helpful in allowing interpreter to create function definitions
 static list<string>append_item(list<string> l, string item)
@@ -431,7 +431,7 @@ for (int n = length(p.def); n>0; n--) {
 			word = head(temp_word_list); // advance to the next word
 			if (boolean) {
 				while ((word!="else") && (word!="endif")) {
-					handle_input(word, S, threads);
+					handle_input(word, S);
 					temp_word_list = rest(temp_word_list);
 					word = head(temp_word_list);
 				}  // word should now be "else" or "endif", so we're done
@@ -445,7 +445,7 @@ for (int n = length(p.def); n>0; n--) {
 					temp_word_list = rest(temp_word_list);
 					word = head(temp_word_list); // word should now be first word after the "else"
 					while(word!="endif") {
-						handle_input(word, S, threads);
+						handle_input(word, S);
 						temp_word_list = rest(temp_word_list);
 						word = head(temp_word_list); // now word should be "endif", so we're done
 					}
@@ -490,20 +490,20 @@ for (int n = length(p.def); n>0; n--) {
 
                 for(int i = 0;i < count;i++) {
                       for (std::vector<string>::iterator it=commands.begin(); it != commands.end(); ++it) {
-                            handle_input(*it, S, threads);
+                            handle_input(*it, S);
                       }
                     memory["index"]--;
                 }
                 cout<<"end cycle"<<endl;
 		    } else {
-			    handle_input(word, S, threads);
+			    handle_input(word, S);
 			    temp_word_list = rest(temp_word_list);
 		}
 	}
 }
 
 
-void handle_input(string s, Stack &S, vector<std::thread> threads)
+void handle_input(string s, Stack &S)
 {
 	string token;
 	string thread = "thread";
@@ -547,28 +547,25 @@ void cli(char* file_name) {
     string token;
     cout<<file_name<<endl;
     cin >> token;
-    cout<< token<<endl;   
-    vector<std::thread> threads;	
-    int a = 2;
+    cout<< token<<endl;   	
  
     while (token != "end") {
         cout<< token<<endl;
         if (token == ":") {
 			add_definitions();
 		} else {
-			handle_input(token, main_stack, threads);
+			handle_input(token, main_stack);
 		}
 		cin >> token;
 	}
     in.close();
     std::cin.rdbuf(cinbuf);
-    //for(int i = 0;i < threads.size();i++){
-    //	threads[i].join();
-    //}
-    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    for(int i = 0;i < threads.size();i++){
+    	threads[i].join();
+    }
     cout<<"Total count of transacionts: "<<total_count<<endl;
-	cout<<"Successful transactions: "<<success_count<<endl;
-	cout<<"Aborted transactions: "<<abort_count<<endl;
+    cout<<"Successful transactions: "<<success_count<<endl;
+    cout<<"Aborted transactions: "<<abort_count<<endl;
 }
 
 
@@ -578,13 +575,12 @@ void Start_stack_interface()
 
 	string token;
 	cin >> token;
-	vector<std::thread> threads;
 
 	while (token != "end") {
 		if (token == ":") {
 			add_definitions();
 		} else {
-			handle_input(token, main_stack, threads);
+			handle_input(token, main_stack);
 		}
 		cin >> token;
 	}

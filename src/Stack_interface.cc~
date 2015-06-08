@@ -38,7 +38,7 @@ bool debug = false;
 Stack main_stack;
 mutex gil;
 map<string, int> memory;
-
+vector<std::thread> threads;
 
 // from Dave's queue-adt.cc; helpful in allowing interpreter to create function definitions
 static list<string>append_item(list<string> l, string item)
@@ -417,7 +417,9 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 	list<string> temp_word_list;
 	bool boolean;
 	temp_word_list = p.def;
-	for (int n = length(p.def); n>0; n--) {
+	vector<std::thread> threads;
+	
+for (int n = length(p.def); n>0; n--) {
 	    if(!empty(temp_word_list))
 		    word = head(temp_word_list);
 		else
@@ -501,7 +503,7 @@ void execute_userdefined(name_def_pair p, Stack &S) {
 }
 
 
-void handle_input(string s, Stack &S, int a)
+void handle_input(string s, Stack &S)
 {
 	string token;
 	string thread = "thread";
@@ -545,24 +547,22 @@ void cli(char* file_name) {
     string token;
     cout<<file_name<<endl;
     cin >> token;
-    cout<< token<<endl;   
-    vector<std::thread> threads;	
-    int a = 2;
+    cout<< token<<endl;   	
  
     while (token != "end") {
         cout<< token<<endl;
         if (token == ":") {
 			add_definitions();
 		} else {
-			handle_input(token, main_stack, a);
+			handle_input(token, main_stack);
 		}
 		cin >> token;
 	}
     in.close();
     std::cin.rdbuf(cinbuf);
-    //for(int i = 0;i < threads.size();i++){
-    //	threads[i].join();
-    //}
+    for(int i = 0;i < threads.size();i++){
+    	threads[i].join();
+    }
     std::this_thread::sleep_for(std::chrono::milliseconds(5000));
     cout<<"Total count of transacionts: "<<total_count<<endl;
 	cout<<"Successful transactions: "<<success_count<<endl;
@@ -576,13 +576,12 @@ void Start_stack_interface()
 
 	string token;
 	cin >> token;
-	vector<std::thread> threads;
 
 	while (token != "end") {
 		if (token == ":") {
 			add_definitions();
 		} else {
-			handle_input(token, main_stack, 0);
+			handle_input(token, main_stack);
 		}
 		cin >> token;
 	}

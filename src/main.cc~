@@ -44,12 +44,8 @@ int main ()
 	#if RUN_STACK_INTERFACE
 	cout << "Type some FORTH input:" << endl;
 	cli("prepare.ft");
-        clock_t begin = clock();
 	cli("file.ft");
-	clock_t end = clock();
-	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-	cout<<elapsed_secs<<endl;
-	//Start_stack_interface();
+	Start_stack_interface();
 	#endif
 	cout<<"That's all folks!"<<endl;
 	return 0;
